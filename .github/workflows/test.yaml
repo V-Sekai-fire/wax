@@ -185,39 +185,6 @@ jobs:
             exit 1
           fi
 
-      - name: Transpile to WebAssembly Text Format (wat)
-        run: |
-          cd build
-          ./waxc ../examples/fib.wax --wat fib.wat
-
-      - name: Compile wat to wasm
-        run: |
-          cd build
-          wat2wasm fib.wat -o fib.wasm
-
-      - name: Optimize wasm
-        run: |
-          cd build
-          wasm-opt fib.wasm -o fib.O4.wasm -O4
-
-      - name: Run WebAssembly in Node.js
-        run: |
-          cd build
-          echo 'const fs = require("fs");' > run_wasm.js
-          echo 'const bytes = fs.readFileSync("fib.O4.wasm");' >> run_wasm.js
-          echo 'const importObject = { console: { log: console.log }, Math };' >> run_wasm.js
-          echo 'WebAssembly.instantiate(bytes, importObject).then(obj => {' >> run_wasm.js
-          echo '  const result = obj.instance.exports.fib(9);' >> run_wasm.js
-          echo '  console.log("Output:", result);' >> run_wasm.js
-          echo '  if (result === 34) {' >> run_wasm.js
-          echo '    console.log("WebAssembly Output is correct.");' >> run_wasm.js
-          echo '  } else {' >> run_wasm.js
-          echo '    console.log("WebAssembly Output is incorrect.");' >> run_wasm.js
-          echo '    process.exit(1);' >> run_wasm.js
-          echo '  }' >> run_wasm.js
-          echo '});' >> run_wasm.js
-          node run_wasm.js
-
       - name: Transpile to JSON
         run: |
           cd build

@@ -51,7 +51,7 @@ install(
 include(InstallRequiredSystemLibraries)
 set(CPACK_BUNDLE_NAME "${PROJECT_NAME}")
 set(CPACK_PACKAGE_VENDOR "Lingdong Huang")
-set(CPACK_PACKAGE_DESCRIPTION "A tiny programming language that transpiles to C, C++, Java, TypeScript, Python, C#, Swift, Lua and WebAssembly")
+set(CPACK_PACKAGE_DESCRIPTION "A tiny programming language that transpiles to C, C++, Java, TypeScript, Python, C#, Swift, and Lua")
 set(CPACK_PACKAGE_DESCRIPTION_SUMMARY "A tiny programming language that transpiles")
 if (APPLE)
     set(CPACK_BUNDLE_PLIST "${CMAKE_CURRENT_SOURCE_DIR}/cmake/Info.plist")

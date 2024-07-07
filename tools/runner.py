@@ -27,8 +27,6 @@ elif (targ == 'swift'):
   cmd += f'swiftc {name}.{targ}; {perf} ./{name};'
 elif (targ == 'lua'):
   cmd += f'{perf} luajit {name}.{targ};'
-elif (targ == 'wat'):
-  cmd += f'./wat2wasm {name}.{targ}; ./wasm-opt {name}.wasm -O4 -o {name}.O4.wasm; {perf} node driver.js {name}.O4.wasm;'
 elif (targ == 'java'):
   cmd += f'javac {name}.{targ}; {perf} java {name};'
 elif (targ == 'py'):

@@ -10,5 +10,4 @@ valgrind ./waxc \
     --py $waxfn.py \
     --swift $waxfn.swift \
     --ts $waxfn.ts \
-    --wat $waxfn.wat \
     $waxfn.wax
