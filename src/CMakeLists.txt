@@ -15,7 +15,6 @@ set(Header_Files
         "to_py.h"
         "to_swift.h"
         "to_ts.h"
-        "to_wat.h"
 )
 source_group("Header Files" FILES "${Header_Files}")
 source_group("${LIBRARY_NAME} Header Files" FILES "waxc_lib.h")
@@ -34,7 +33,6 @@ set(Source_Files
         "to_py.c"
         "to_swift.c"
         "to_ts.c"
-        "to_wat.c"
 )
 source_group("Source Files" FILES "${Source_Files}")
 source_group("${EXEC_NAME} Source Files" FILES "waxc.c")
