@@ -49,13 +49,15 @@ jobs:
       - name: Install Lua
         run: sudo apt-get install lua5.3
 
-      # - name: Use wabt 1.0.20
-      #   uses: mwilliamson/setup-wabt-action@v3
-      #   with:
-      #     wabt-version: "1.0.20"
-        
-      # - name: Setup Wasmer
-      #   uses: wasmerio/setup-wasmer@v3.1
+      - name: Install wabt
+        run: |
+          sudo apt-get update
+          sudo apt-get install wabt
+
+      - name: Install binaryen
+        run: |
+          sudo apt-get update
+          sudo apt-get install binaryen
 
       - name: Create build directory
         run: mkdir build
@@ -183,20 +185,38 @@ jobs:
             exit 1
           fi
 
-      # - name: Transpile to WebAssembly and check output
-      #   run: |
-      #     cd build
-      #     ./waxc ../examples/fib.wax --wat fib.wat
-      #     wat2wasm fib.wat -o fib.wasm
-      #     wasmer run fib.wasm -- 9 > output.txt
-      #     OUTPUT=$(cat output.txt)
-      #     echo "Output: $OUTPUT"
-      #     if [ "$OUTPUT" -eq 34]; then
-      #       echo "WebAssembly Output is correct."
-      #     else
-      #       echo "WebAssembly Output is incorrect."
-      #       exit 1
-      #     fi
+      - name: Transpile to WebAssembly Text Format (wat)
+        run: |
+          cd build
+          ./waxc ../examples/fib.wax --wat fib.wat
+
+      - name: Compile wat to wasm
+        run: |
+          cd build
+          wat2wasm fib.wat -o fib.wasm
+
+      - name: Optimize wasm
+        run: |
+          cd build
+          wasm-opt fib.wasm -o fib.O4.wasm -O4
+
+      - name: Run WebAssembly in Node.js
+        run: |
+          cd build
+          echo 'const fs = require("fs");' > run_wasm.js
+          echo 'const bytes = fs.readFileSync("fib.O4.wasm");' >> run_wasm.js
+          echo 'const importObject = { console: { log: console.log }, Math };' >> run_wasm.js
+          echo 'WebAssembly.instantiate(bytes, importObject).then(obj => {' >> run_wasm.js
+          echo '  const result = obj.instance.exports.fib(9);' >> run_wasm.js
+          echo '  console.log("Output:", result);' >> run_wasm.js
+          echo '  if (result === 34) {' >> run_wasm.js
+          echo '    console.log("WebAssembly Output is correct.");' >> run_wasm.js
+          echo '  } else {' >> run_wasm.js
+          echo '    console.log("WebAssembly Output is incorrect.");' >> run_wasm.js
+          echo '    process.exit(1);' >> run_wasm.js
+          echo '  }' >> run_wasm.js
+          echo '});' >> run_wasm.js
+          node run_wasm.js
 
       - name: Transpile to JSON
         run: |
