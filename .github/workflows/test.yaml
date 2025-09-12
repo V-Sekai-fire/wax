@@ -19,6 +19,9 @@ jobs:
       - name: Set up CMake
         uses: jwlawson/actions-setup-cmake@v1
 
+      - name: Set up Just
+        uses: extractions/setup-just@v3
+
       - name: Install Ninja
         run: sudo apt-get install ninja-build
 
