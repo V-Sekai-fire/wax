@@ -625,8 +625,11 @@ str_t expr_to_py(expr_t* expr, int indent){
 
   }else if (expr->key == EXPR_EXTERN){
     //skip
-    out.len-=4;
-    if(out.len < 0) out.len = 0;
+    if(out.len > 4) {
+      out.len -=4;
+    } else {
+      out.len = 0;
+    }
     out.data[out.len] = 0;
     indent=-1;
   }else if (expr->key == EXPR_BREAK){

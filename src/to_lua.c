@@ -605,8 +605,11 @@ str_t expr_to_lua(expr_t* expr, int indent){
 
   }else if (expr->key == EXPR_EXTERN){
     //skip
-    out.len-=2;
-    if(out.len < 0) out.len = 0;
+    if(out.len > 2) {
+      out.len -=2;
+    } else {
+      out.len = 0;
+    }
     out.data[out.len] = 0;
     indent=-1;
   }else if (expr->key == EXPR_BREAK){

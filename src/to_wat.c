@@ -157,7 +157,7 @@ str_t expr_to_wat(expr_t* expr, int indent, char lr){
       str_add(&out, s);
       str_add(&out, ")");
       wat_data_t* d = (wat_data_t*)malloc(sizeof(wat_data_t));
-      d->data = tok->val;
+      d->data = str_from(tok->val.data, tok->val.len);
       d->offset = wat_str_ptr;
 
       list_add(&wat_strs, d);
@@ -1231,7 +1231,7 @@ str_t tree_to_wat(str_t modname, expr_t* tree, map_t* functable, map_t* stttable
   while(tmp1){
       tmp2 = tmp1->next;
       free(tmp1->data);
-      free(tmp1);
+      // free(tmp1); // list nodes are mallocx, freed by freex
       tmp1 = tmp2;
   }
   wat_strs.len = 0;
