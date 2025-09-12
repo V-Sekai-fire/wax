@@ -1,4 +1,4 @@
-sources := "src/common.c src/parser.c src/tac.c src/text.c src/to_c.c src/to_cpp.c src/to_cs.c src/to_java.c src/to_json.c src/to_lua.c src/to_py.c src/to_swift.c src/to_ts.c src/to_wat.c"
+sources := "src/common.c src/parser.c src/tac.c src/text.c src/to_c.c src/to_cpp.c src/to_cs.c src/to_ex.c src/to_java.c src/to_json.c src/to_lua.c src/to_py.c src/to_swift.c src/to_ts.c src/to_wat.c"
 
 gcc_flags := "-std=c99 -pedantic -Wall"
 
@@ -29,6 +29,7 @@ test:
         --c $waxfn.c \
         --cpp $waxfn.cpp \
         --cs $waxfn.cs \
+        --ex $waxfn.ex \
         --java $waxfn.java \
         --json $waxfn.json \
         --lua $waxfn.lua \

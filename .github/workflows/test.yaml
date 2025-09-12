@@ -52,6 +52,12 @@ jobs:
       - name: Install Lua
         run: sudo apt-get install lua5.3
 
+      - name: Install Elixir
+        uses: erlef/setup-beam@v1
+        with:
+          elixir-version: "1.15"
+          otp-version: "26"
+
       - name: Install wabt
         run: |
           sudo apt-get update
@@ -185,6 +191,20 @@ jobs:
             echo "Lua Output is correct."
           else
             echo "Lua Output is incorrect."
+            exit 1
+          fi
+
+      - name: Transpile to Elixir and check output
+        run: |
+          cd build
+          ./waxc ../examples/fib.wax --ex fib.ex
+          elixir fib.ex
+          OUTPUT=$(elixir -e "Fib.fib(9)" | tail -1)
+          echo "Output: $OUTPUT"
+          if [ "$OUTPUT" -eq 34 ]; then
+            echo "Elixir Output is correct."
+          else
+            echo "Elixir Output is incorrect."
             exit 1
           fi
 
